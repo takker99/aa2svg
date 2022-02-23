@@ -4,6 +4,10 @@
   },
   "routes": [
     {
+      "src": "/svg/(.+)\\?crop=(.+)$",
+      "dest": "api/convert?type=svg&url=$1&crop=$2"
+    },
+    {
       "src": "/svg/(.+)",
       "dest": "api/convert?type=svg&url=$1"
     }

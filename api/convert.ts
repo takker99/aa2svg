@@ -28,6 +28,9 @@ export default async (req: ServerRequest) => {
     req.respond({ status: 400, body: "Image type must be 'svg'." });
     return;
   }
+  const cropNum = parseFloat(params.get("crop") ?? "1");
+  const crop = isNaN(cropNum) ? 1 : Math.min(1, Math.abs(cropNum));
+  console.log({ svgURL, imageType, crop, cropText: params.get("crop") });
 
   // ETagを取得する
   const prevETag = req.headers.get("If-None-Match");
@@ -35,13 +38,13 @@ export default async (req: ServerRequest) => {
   try {
     const text = await fetchText(svgURL);
     // ETagを作る
-    const hash = await sha256(text);
+    const hash = await sha256(`${text}${crop}`);
     const eTag = `W/"${hash}"`;
     if (eTag === prevETag) {
       req.respond({ status: 304 });
       return;
     }
-    const svg = makeSVG(text);
+    const svg = makeSVG(text, { crop });
 
     const headers = new Headers();
     headers.set("Content-Type", "image/svg+xml; charaset=utf-8");

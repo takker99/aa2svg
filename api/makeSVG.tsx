@@ -11,14 +11,18 @@ const fontURL = `data:application/font-woff2;charset=utf-8;base64,${
   encode(buffer)
 }`;
 
-export function makeSVG(aa: string) {
+export interface MakeSVGOptions {
+  crop?: number;
+}
+export function makeSVG(aa: string, options?: MakeSVGOptions) {
   const fontSize = 16;
+  const crop = options?.crop ?? 1;
   const { maxWidth, maxHeight, texts } = makeTexts(aa, fontSize);
   return renderToString(
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox={`0 0 ${maxWidth} ${maxHeight}`}
-      width={maxWidth}
+      viewBox={`0 0 ${maxWidth * crop} ${maxHeight}`}
+      width={maxWidth * crop}
       height={maxHeight}
     >
       <style>
