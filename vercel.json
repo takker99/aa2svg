@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/**/*.[jt]s": { "runtime": "vercel-deno@1.1.0" }
+    "api/convert.ts": { "runtime": "vercel-deno@1.1.1" }
   },
   "routes": [
     {
