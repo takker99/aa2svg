@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/**/*.[jt]s": { "runtime": "vercel-deno@1.1.0" }
+  },
+  "routes": [
+    {
+      "src": "/svg/(.+)",
+      "dest": "api/convert?type=svg&url=$1"
+    }
+  ]
+}
