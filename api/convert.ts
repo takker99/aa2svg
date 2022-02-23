@@ -1,8 +1,8 @@
 #!/usr/bin/env deno run --no-check
 
 import { ServerRequest } from "https://deno.land/std@0.105.0/http/server.ts";
-import { fetchText } from "./fetch.ts";
-import { makeSVG } from "./makeSVG.tsx";
+import { fetchText } from "../src/fetch.ts";
+import { makeSVG } from "../src/makeSVG.tsx";
 
 export default async (req: ServerRequest) => {
   const base = `${req.headers.get("x-forwarded-proto")}://${
