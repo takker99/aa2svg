@@ -1,3 +1,5 @@
+#!/usr/bin/env deno run --config ../deno.json
+
 import { ServerRequest } from "https://deno.land/std@0.105.0/http/server.ts";
 import { fetchText } from "../src/fetch.ts";
 import { makeSVG } from "../src/makeSVG.tsx";
