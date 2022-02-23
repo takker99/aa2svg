@@ -2,14 +2,7 @@
 import { h } from "https://esm.sh/preact@10.6.6";
 import { renderToString } from "https://esm.sh/preact-render-to-string";
 import { createCanvas } from "https://deno.land/x/canvas@v1.4.1/mod.ts";
-import { encode } from "https://deno.land/std@0.126.0/encoding/base64.ts";
-
-const buffer = await Deno.readFile(
-  new URL("./aahub_light.woff2", import.meta.url),
-);
-const fontURL = `data:application/font-woff2;charset=utf-8;base64,${
-  encode(buffer)
-}`;
+import { fontURL } from "./font.ts";
 
 export interface MakeSVGOptions {
   crop?: number;
