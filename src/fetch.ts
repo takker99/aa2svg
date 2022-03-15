@@ -1,5 +1,5 @@
-export async function fetchText(url: string) {
-  const response = await fetch(url);
+export async function fetchText(url: string | URL) {
+  const response = await fetch(url.toString());
 
   if (!response.ok) {
     throw new Error("Text response is not OK");
