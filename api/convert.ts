@@ -3,6 +3,7 @@
 import { ServerRequest } from "https://deno.land/std@0.105.0/http/server.ts";
 import { fetchText } from "../src/fetch.ts";
 import { makeSVG } from "../src/makeSVG.tsx";
+import { createHash } from "https://deno.land/std@0.129.0/hash/mod.ts";
 
 export default async (req: ServerRequest) => {
   const base = `${req.headers.get("x-forwarded-proto")}://${
@@ -38,7 +39,7 @@ export default async (req: ServerRequest) => {
   try {
     const text = await fetchText(svgURL);
     // ETagを作る
-    const hash = await sha256(`${text}${crop}`);
+    const hash = createHash("md5").update(`${text}${crop}`).toString();
     const eTag = `W/"${hash}"`;
     if (eTag === prevETag) {
       req.respond({ status: 304 });
@@ -59,13 +60,3 @@ export default async (req: ServerRequest) => {
     req.respond({ status: 400, body: e.message });
   }
 };
-
-// from https://qiita.com/economist/items/768d2f6a10d54d4fa39f
-//https://developer.mozilla.org/ja/docs/Web/API/SubtleCrypto/digest#%E3%83%80%E3%82%A4%E3%82%B8%E3%82%A7%E3%82%B9%E3%83%88%E5%80%A4%E3%82%9216%E9%80%B2%E6%96%87%E5%AD%97%E5%88%97%E3%81%AB%E5%A4%89%E6%8F%9B%E3%81%99%E3%82%8B
-async function sha256(text: string) {
-  const uint8 = new TextEncoder().encode(text);
-  const digest = await crypto.subtle.digest("SHA-256", uint8);
-  return Array.from(new Uint8Array(digest)).map((v) =>
-    v.toString(16).padStart(2, "0")
-  ).join("");
-}
